@@ -1,0 +1,292 @@
+<html>
+    <head>
+      <? include('head.html'); ?>
+    </head>
+    <body>
+        <? include ('header.html'); ?>
+        <div class="block-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 left">
+                        <div class="tab-buttons">
+                            <div class="one-button active" data-tab="tab-1">
+                                <div class="top">QIWI → Биткоин</div>
+                                <div class="bottom">1 BTC = 595 251 ₽</div>
+                            </div>
+                            <div class="one-button" data-tab="tab-2">
+                                <div class="top">Биткоин → QIWI</div>
+                                <div class="bottom">571 908 ₽ = 1 BTC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 center">
+                        <div class="tab tab-1 main-tab">
+                            <div class="top">
+                                <div class="title">QIWI → Биткоин</div>
+                                <div class="subtitle">Автоматическая покупка биткоин за QIWI</div>
+                            </div>
+                            <div class="content">
+                                <form action="/" method="POST" id="exchange" data-id="2" class="qiwibtc">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Отдаете</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control roubles" name="roubles" placeholder="от 800 до 100000">
+                                                    <span class="input-group-addon currency-text">₽</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Получаете</label>
+                                                <div class="input-group">
+                                                    <input type="hidden" class="btc" name="btc">
+                                                    <input type="text" class="form-control btc" placeholder="0.1" disabled="">
+                                                    <span class="input-group-addon currency-text">BTC</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BTC адрес</label>
+                                        <input type="text" class="form-control adress" name="adress">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ваш QIWI кошелек</label>
+                                        <input type="text" class="form-control phone" name="phone" placeholder="7">
+                                    </div>
+                                    <!-- hidden fields -->
+                                    <input type="hidden" name="give" value="1">
+                                    <input type="hidden" name="recieve" value="3">
+                                    <!-- end hidden fields -->
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg qiwibtcSUB">Обменять</button>
+                                    </div>
+                                </form>
+                                <div class="dop-text text-success">Заказы обрабатываются автоматически 24/7</div>
+                            </div>
+                        </div>
+                        <div class="tab tab-2 main-tab hidden">
+                            <div class="top">
+                                <div class="title">Биткоин → QIWI</div>
+                                <div class="subtitle">Перевод на ваш QIWI кошелек</div>
+                            </div>
+                            <div class="content">
+                                <form action="/change/btcqiwi.php" method="POST" class="btcqiwi">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Отдаете</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control btc" name="btc" placeholder="от 0.0015 до 0.15" required="">
+                                                    <span class="input-group-addon">BTC</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Получаете</label>
+                                                <div class="input-group">
+                                                    <input type="hidden" class="roubles" name="roubles">
+                                                    <input type="text" class="form-control roubles" placeholder="от 800 до 100000" disabled="">
+                                                    <span class="input-group-addon">₽</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ваш QIWI кошелек</label>
+                                        <input type="text" class="form-control phone" name="phone" placeholder="7" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-lg btcqiwiSUB">Обменять</button>
+                                    </div>
+                                </form>
+                                <div class="dop-text text-success">Заказы обрабатываются автоматически 24/7</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 right">
+                        <div class="tab tab-1">
+                            <div class="title">Как оплатить?</div>
+                            <div class="text">Пополните свой Qiwi-кошелек любым удобным способом, а с него делайте перевод на наш QIWI счет, который будет выдан после создания заказа.</div>
+                            <div class="title">Быстро?</div>
+                            <div class="text">Биткоины будут отправлены автоматически в течение минуты сразу после поступления платежа.<br>Мы платим повышенную комиссию за перевод. Биткоины доходят до вас быстрее, чем от других обменников. Подтверждение приходит в первом блоке.</div>
+                            <div class="title">Безопасно?</div>
+                            <div class="text">Конверт не разглашает информацию о клиентах</div>
+                        </div>
+                        <div class="tab tab-2 hidden">
+                            <div class="title">Как оплатить?</div>
+                            <div class="text">Вы переводите биткоины на указанный в заказе адрес.</div>
+                            <div class="title">Быстро?</div>
+                            <div class="text">Отправляем рубли после 1 подтверждения</div>
+                            <div class="title">Комиссия Биткоин</div>
+                            <div class="text">Когда переводите биткоины нам, рекомендуем ставить комиссию повыше.<br>Это гарантирует быстрый обмен.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="block-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-12">
+                        <img src="/assets/img/1.svg">
+                        <div class="title">Просто</div>
+                        <div class="text">Не нужно разбираться в тонкостях работы Биткоина</div>
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                        <img src="/assets/img/2.svg">
+                        <div class="title">Быстро</div>
+                        <div class="text">Автоматический обмен 24/7 за секунды</div>
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                        <img src="/assets/img/3.svg">
+                        <div class="title">Безопасно</div>
+                        <div class="text">Мы не разглашаем данные клиентов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <? include('footer.html'); ?>
+        <div class="notificate"></div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $('form#exchange').submit(function (event) {
+                    event.preventDefault();
+                    var $form = $(this);
+                    var formData = new FormData($(this)[0]);
+
+                    $.ajax({
+                        type: $form.attr('method'),
+                        url: $form.attr('action'),
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (result) {
+                            var json = jQuery.parseJSON(JSON.stringify(result));
+                            switch (json.callback) {
+                                case 'success':
+                                    break;
+                                case 'email_registered':
+                                    break;
+                                case 'not_agree_terms':
+                                    break;
+                                default:
+                                    break;
+                            }
+                        },
+                        error: function (result) {
+                            alert('Server error');
+                        }
+                    });
+                });
+
+                $('.phone').inputmask('+7 (999) 999-99-99');
+
+                $('.one-button').click(function () {
+                    if ($(this).hasClass('active')) {
+                        return false;
+                    } else {
+                        $('.one-button').toggleClass('active');
+                        $('.tab').toggleClass('hidden');
+                    }
+                });
+
+                /*$('.qiwibtc .roubles').on('change', function () {
+                 if (this.value.match(/[^0-9]/g))
+                 this.value = this.value.replace(/[^0-9]/g, '');
+                 $('.qiwibtc .btc').val((this.value / 595251).toFixed(8));
+                 if ($(this).val() < 800 || $(this).val() > 100000) {
+                 $(this).parent().css('box-shadow', '0px 0px 0px 1px red');
+                 notice("Сумма обмена должна быть от 800 до 100.000 рублей");
+                 $('.qiwibtc .roubles').oneTime("1500ms", function () {
+                 $(this).parent().css('box-shadow', '0px 0px 0px 1px #fff');
+                 });
+                 }
+                 });
+                 
+                 $('.qiwibtc .adress').on('change', function () {
+                 if ($(this).val().length < 26 || $(this).val().length > 34) {
+                 notice("Биткоин-адрес должен быть от 26 до 34 символов");
+                 $(this).css('box-shadow', '0px 0px 0px 1px red');
+                 $('.qiwibtc .adress').oneTime("1500ms", function () {
+                 $(this).css('box-shadow', '0px 0px 0px 1px #fff');
+                 });
+                 }
+                 });
+                 
+                 $('.qiwibtc .phone').on('change', function () {
+                 if (this.value.match(/[^0-9]/g))
+                 if (this.value.replace(/[^0-9]/g, '').length != 11) {
+                 notice("Введите номер полностью!");
+                 $(this).css('box-shadow', '0px 0px 0px 1px red');
+                 $('.qiwibtc .phone').oneTime("1500ms", function () {
+                 $(this).css('box-shadow', '0px 0px 0px 1px #fff');
+                 });
+                 }
+                 });
+                 
+                 $('.btcqiwi .btc').on('change', function () {
+                 if (this.value.match(/[^0-9.]/g))
+                 this.value = this.value.replace(/[^0-9]/g, '');
+                 $('.btcqiwi .roubles').val((this.value * 571908).toFixed());
+                 if ($(this).val() < 0.0015 || $(this).val() > 0.15) {
+                 $(this).parent().css('box-shadow', '0px 0px 0px 1px red');
+                 notice("Сумма обмена должна быть от 0.0015 до 0.15 BTC");
+                 $('.btcqiwi .btc').oneTime("1500ms", function () {
+                 $(this).parent().css('box-shadow', '0px 0px 0px 1px #fff');
+                 });
+                 }
+                 });
+                 
+                 $('.btcqiwi .phone').on('change', function () {
+                 if (this.value.match(/[^0-9]/g))
+                 if (this.value.replace(/[^0-9]/g, '').length != 11) {
+                 notice("Введите номер полностью!");
+                 $(this).css('box-shadow', '0px 0px 0px 1px red');
+                 $('.btcqiwi .phone').oneTime("1500ms", function () {
+                 $(this).css('box-shadow', '0px 0px 0px 1px #fff');
+                 });
+                 }
+                 });
+                 */
+                // Уведомлятель
+                var a = 0;
+                function notice(text) {
+                    if (a != 0) {
+                        alert(text);
+                    }
+                    a = 1;
+                    $('.notificate').text(text);
+                    $('.notificate').css('bottom', '30px');
+                    $('.notificate').oneTime(2500, function () {
+                        $('.notificate').css('bottom', '-90px');
+                        a = 0;
+                    });
+                }
+
+                /*
+                 $('.qiwibtcSUB').click(function () {
+                 if ($('.qiwibtc .phone').val().replace(/[^0-9]/g, '').length != 11 || $('.qiwibtc .roubles').val() < 800 || $('.qiwibtc .roubles').val() > 100000 || $('.qiwibtc .adress').val().length < 26 || $('.qiwibtc .adress').val().length > 34) {
+                 notice('Исправьте ошибки');
+                 } else {
+                 $('.qiwibtc').submit();
+                 }
+                 });
+                 $('.btcqiwiSUB').click(function () {
+                 if ($('.btcqiwi .phone').val().replace(/[^0-9]/g, '').length != 11 || $('.btcqiwi .btc').val() < 0.0015 || $('.btcqiwi .btc').val() > 0.15) {
+                 notice('Исправьте ошибки');
+                 } else {
+                 $('.btcqiwi').submit();
+                 }
+                 });
+                 
+                 */
+
+            });
+        </script>
+    </body>
+</html>

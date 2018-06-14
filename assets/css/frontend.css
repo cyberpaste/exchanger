@@ -1,0 +1,459 @@
+@charset "utf-8";
+
+/*---- Подключаем шрифт  ----- */
+@import url('/assets/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&subset=cyrillic');
+
+html, body {
+	margin: 0px auto !important;
+	padding: 0px !important;
+	width: 100%;
+	height: 100%;
+	font-family: 'Open Sans' !important;
+	font-size: 14px;
+    font-weight: 300;
+	background: #e5e9ec;
+    color: #222;
+}
+
+::-webkit-scrollbar             {background: #e5e9ec;width: 10px;height: 10px;}
+::-webkit-scrollbar-button      {}
+::-webkit-scrollbar-track       {}
+::-webkit-scrollbar-track-piece {}
+::-webkit-scrollbar-thumb       {background: #222;}
+::-webkit-scrollbar-corner      {} 
+::-webkit-resizer               {}
+
+/*---- Общие стили  ----- */
+*[data-hide=""],
+*[data-hide="0"],
+.hidden{
+    display: none !important;
+}
+button,
+button:hover,
+button:active,
+button:focus{
+    outline: none;
+}
+input,
+input:hover,
+input:active,
+input:focus{
+    outline: none;
+}
+textarea,
+textarea:hover,
+textarea:active,
+textarea:focus{
+    outline: none;
+}
+a,
+a:hover,
+a:active,
+a:focus{
+    text-decoration: none;
+    transition: 150ms;
+}
+p {
+    margin: 0 0 0px;
+}
+
+label, a, button{
+    user-select: none;
+    outline: none !important;
+}
+*{
+    -webkit-text-decoration-skip: none;
+    box-sizing: border-box;
+}
+/* ---- Block 1  ----- */
+.block-1{
+    padding-top: 50px;
+}
+.block-1 .title{
+    text-align: center;
+}
+.block-1 .title img{
+    height: 70px;
+    margin-right: 10px;
+}
+.block-1 .title span{
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* ---- Block 2  ----- */
+.block-2{
+    padding-top: 10px;
+}
+.block-2 .container{
+    width: 95%;
+}
+.block-2 .tab{
+    background: #fff;
+}
+.block-2 .left{
+    margin-top: 30px;
+}
+.block-2 .left .tab-buttons{
+    background: #fff;
+}
+.block-2 .left .tab-buttons .one-button{
+    padding: 15px;
+    cursor: pointer;
+    transition: 150ms;
+}
+.block-2 .left .tab-buttons .one-button:hover{
+    opacity: 0.8;
+}
+.block-2 .left .tab-buttons .one-button.active{
+    background: #222222;
+    color: #fff;
+}
+.block-2 .left .tab-buttons .one-button.active:hover{
+    opacity: 1;
+}
+.block-2 .left .tab-buttons .one-button .top{
+    font-size: 18px;
+    font-weight: 300;
+}
+.block-2 .left .tab-buttons .one-button .bottom{
+    font-size: 12px;
+    font-weight: 600;
+}
+.block-2 .center{
+    margin-top: 30px;
+}
+.block-2 .center .tab .top{  
+    padding: 20px 25px;
+    border-bottom: 1px solid #e6e9ec;
+}
+.block-2 .center .tab .top .title{
+    font-size: 24px;
+}
+.block-2 .center .tab .top .subtitle{
+    font-size: 12px;
+}
+.block-2 .center .tab .content{    
+    padding: 25px;
+}
+.block-2 .center .tab .content .form-group{
+    margin-bottom: 20px;
+}
+.block-2 .center .tab .content .form-group label{
+    font-size: 14px;
+    color: #A1A1A1;
+    font-weight: 600;
+}
+.block-2 .center .tab .content .form-group input{
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 2px;
+    border: 1px solid #DDD;
+    box-shadow: none;
+    font-weight: 300;
+    font-family: 'Open Sans';
+}
+
+.block-2 .center .tab .content .form-group button{
+	box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.1);
+    background: #fade23;
+	color:#222;
+	font-weight:700 !important;
+    width: 100%;
+    border-radius: 2px;
+    border: none;
+    font-weight: 300;
+    font-family: 'Open Sans';
+}
+.block-2 .center .tab .content .form-group button:hover{
+	color:white;
+    background: #222222;
+	transition: .9s;
+}
+.block-2 .center .tab .content .form-group .input-group{
+    border-radius: 2px;
+    transition: 350ms;
+    box-shadow: 0px 0px 0px 1px #fff;
+}
+.block-2 .center .tab .content .form-group .input-group input{
+    border-radius: 2px 0px 0px 2px;
+    border-right-color: #DDD !important;
+}
+.block-2 .center .tab .content .form-group .input-group-addon {
+    border-radius: 0px 2px 2px 0px;
+    border: 1px solid #DDD;
+    border-left: none;
+}
+.block-2 .center .tab .content .dop-text{
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    padding: 25px;
+}
+.block-2 .right {
+    margin-top: 30px;
+}
+.block-2 .right .tab{
+    padding: 20px;
+}
+.block-2 .right .tab .title:first-child{
+    margin-top: 0px;
+}
+.block-2 .right .tab .title{
+    font-size: 24px;
+    margin-top: 15px;
+    color: #495769;
+}
+.block-2 .right .tab .text{
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* ---- Block 3  ----- */
+.block-3{
+    padding-top: 30px;
+}
+.block-3 .container{
+    max-width: 1000px;
+}
+.block-3 img{
+    width: 150px;
+    margin-top: 40px;
+}
+.block-3 .title{
+    font-size: 32px;
+    margin-top: 10px;
+    color: #495769;
+}
+.block-3 .text{
+    font-size: 16px;
+    margin-top: 5px;
+}
+.block-3{
+    text-align: center;
+}
+
+/* ---- Block 4  ----- */
+.block-4{
+    margin-top: 75px;
+    background: #1c1e20;
+    font-size: 14px;
+    color: #fff;
+    padding: 40px 0px 40px 0px;
+}
+.block-4 .left{
+    
+}
+.block-4 .right{
+    text-align: right;
+}
+
+/* ---- Qiwi -> BTC ----- */
+.block-pay{
+    padding: 40px 0px 25px 0px;
+}
+.block-pay .table-info{
+    background: #fff;
+    padding: 15px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0px auto;
+}
+.block-pay .table-info .top{
+    background: #57636f;
+    font-size: 16px;
+    padding: 15px 0px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    margin: -15px -15px 15px -15px;
+}
+.block-pay .table-info .money{
+    
+}
+.block-pay .table-info .money .left{
+    text-align: left;
+}
+.block-pay .table-info .money .right{
+    text-align: right;
+}
+.block-pay .table-info .money .title{
+    font-size: 32px;
+}
+.block-pay .table-info .money .summa{
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: -5px;
+}
+.block-pay .table-info .money .subtitle{
+    font-size: 14px;
+    margin-top: 2.5px;
+}
+.block-pay .table-info .money .rec{
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 2.5px;
+}
+.block-pay .table-info .pay-qiwi{
+    padding: 25px 0px;
+    text-align: center;
+}
+.block-pay .table-info .pay-qiwi a{
+    background: #f8b12d;
+    font-size: 18px;
+    color: #fff;
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: 700;
+    border-radius: 10px;
+}
+.block-pay .table-info .pay-qiwi div{
+    margin-top: 2.5px;
+    color: #a94442;
+    font-size: 14px;
+    font-weight: 700;
+}
+.block-pay .table-info .end{
+    margin-top: 10px;
+    color: #a94442;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    padding: 15px 0px 25px 0px;
+}
+
+.notificate{
+    background: rgb(255, 255, 255);
+    box-shadow: -5px 5px 10px 0px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    z-index: 10000;
+    width: 250px;
+    padding: 10px 15px;
+    left: 30px;
+    bottom: -90px;
+    font: 300 16px 'Open Sans';
+    color: #000000;
+    transition: 500ms;
+    border-left: 5px solid #222222;
+}
+.main-tab{box-shadow:0 0 5px rgba(0,0,0,0.5); font-weight:500; color:#222222;}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+    background: #222222;
+    color: #fff;
+}
+
+.navbar-nav>li>.dropdown-menu {
+    width: auto;
+}
+
+.currency-logo{width:30px;}
+.currency-text{font-weight:700;}
+.footer-fixed{width:100%;position:fixed;bottom:0px;}	
+
+.small-icon{width:1.5rem;}
+
+.alert {
+    border-radius: 0.1rem;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #222222;
+    border-color: #222222;
+}
+.pagination>li>a, .pagination>li>span {
+    color: #222222;
+}
+
+.pagination>li:hover>a, .pagination>li:hover>span {
+    color: #222222;
+}
+.review{margin-top:10px !important;}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    z-index: 2;
+    color: #fff;
+    background-color: #222222;
+    border-color: #222222;
+}
+
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+/*медиа-разметка, смартфоны xs*/
+@media (max-width: 767px) {
+    
+    .block-1 .title span{
+        display: block;
+        margin-top: 10px;
+    }
+    
+    .block-3 {
+        padding-top: 25px;
+    }
+    .block-3 img {
+        margin-top: 25px;
+    }
+    
+    .block-4{
+        
+    }
+    .block-4 .left{
+        text-align: center;
+    }
+    .block-4 .right{
+        text-align: center;
+    }
+    
+    .money{
+        text-align: center !important;
+    }
+    .money .left{
+        text-align: center !important;
+    }
+    .money .right{
+        margin-top: 15px;
+        text-align: center !important;
+    }
+    
+	.navbar{    margin-bottom: 0px; margin-top:10px;}
+	
+	.footer-fixed {
+    width: 100%;
+    position: relative;
+    bottom: auto;
+}
+} 
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+/*медиа-разметка, планшеты sm*/
+@media (min-width: 768px) and (max-width: 991px) {
+    
+    
+    
+}
+
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+/*медиа-разметка, ноутбуки md*/
+@media (min-width: 992px) and (max-width: 1199px) {
+    
+    
+    
+}
+
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+/*медиа-разметка, большие мониторы lg*/
+@media (min-width: 1200px) {
+    
+    
+    
+}
+
+

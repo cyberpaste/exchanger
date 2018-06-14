@@ -1,0 +1,113 @@
+<?php
+$pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page,$data['total']);
+
+?>
+
+<html>
+    <head>
+        <? include('head.html'); ?>
+    </head>
+    <body>
+        <? include ('header.html'); ?>
+        <div class="block-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <? include('admin-menu.html');?>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 center">
+                        <div class="tab tab-1 main-tab">
+                            <div class="top">
+                                <div class="title">Пользователи</div>
+                            </div>
+							
+							<link rel="stylesheet" type="text/css" href="/assets/css/pell.css">
+							<script src="/assets/js/pell.js"></script>
+    
+	
+      <div id="pell" class="pell" style="margin:25px;"></div>
+      <div style="margin:25px;">
+        <h3>Text output:</h3>
+        <div id="text-output"></div>
+      </div>
+      <div style="margin:25px;">
+        <h3>HTML output:</h3>
+        <pre id="html-output"></pre>
+      </div>
+    
+	
+	<script>
+      var editor = window.pell.init({
+        element: document.getElementById('pell'),
+        defaultParagraphSeparator: 'p',
+        styleWithCSS: false,
+        onChange: function (html) {
+          document.getElementById('text-output').innerHTML = html
+          document.getElementById('html-output').textContent = html
+        }
+      })
+    </script>
+	
+	
+                            <div class="content">
+                                <div class="table-responsive"> 
+                                    <table class="table"> 
+                                        <thead> 
+                                            <tr> 
+                                                <th>#</th> 
+                                                <th>Имя</th> 
+                                                <th>email</th> 
+                                                <th>Регистрация</th> 
+                                                <th>Последний вход</th> 
+                                            </tr> 
+                                        </thead> 
+                                        <tbody> 
+                                            <? foreach($data['users'] as $item){?>
+                                            <tr> 
+                                                <th scope="row"><?=$item['id']?></th> 
+                                                <td><?=$item['name']?></td> 
+                                                <td><?=$item['email']?></td> 
+                                                <td><?=$item['registered']?></td> 
+                                                <td><?=$item['lastlogin']?></td> 
+                                            </tr> 
+                                          <? }?>
+                                        </tbody> 
+                                    </table> 
+                                </div>
+                                <?=$pagination;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+           /* $(document).ready(function () {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/ajax?method=getAllUsers',
+                    data: '',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        var json = jQuery.parseJSON(JSON.stringify(result));
+
+                        console.log(json);
+
+                    },
+                    error: function (result) {
+                        alert('Server error');
+                    }
+                });
+
+
+
+
+            });
+*/
+        </script>
+        <? include('footer.html'); ?>
+        <div class="notificate"></div>
+    </body>
+</html>

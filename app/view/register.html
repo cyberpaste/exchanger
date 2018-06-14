@@ -1,0 +1,101 @@
+<html>
+   <head>
+      <? include('head.html'); ?>
+   </head>
+   <body>
+      <? include ('header.html'); ?>
+	  <div class="block-2">
+         <div class="container">
+            <div class="row">
+			   <div class="col-lg-4 col-md-4 col-sm-2 col-xs-12">
+			   </div>
+               <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 center">
+                  <div class="tab tab-1 main-tab">
+                     <div class="top">
+                        <div class="title">Регистрация</div>
+                     </div>
+                     <div class="content">
+                        <form id="register" method="POST">
+                           <div class="form-group">
+                              <label>Имя</label>
+                              <input type="text" class="form-control" name="name" id="name">
+                           </div>
+                           <div class="form-group">
+                              <label>Email</label>
+                              <input type="text" class="form-control" name="email" id="email">
+                           </div>
+						   
+						   <div class="form-group">
+						    <label>Решите пример:</label><img src="/captcha">
+							<input type="text" class="form-control" placeholder="Введите число" name="captcha" id="captcha">
+						   </div>
+						   
+						   <div class="checkbox">
+                            <label><input type="checkbox" name="rules" value="" id="rules">Соглашаюсь с <a href="/rules" target="_blank">Правилами</a></label>
+                           </div>
+                           <div class="form-group">
+                              <button type="submit" class="btn btn-primary btn-lg">Отправить</button>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+	  <script>
+      $(document).ready(function() {
+	      function notice(text) {
+	          $('.notificate').html(text);
+	          $('.notificate').css('bottom', '30px');
+	          $('.notificate').oneTime(2500, function() {
+	              $('.notificate').css('bottom', '-250px');
+	          });
+	      }
+
+	      $('form#register').submit(function(event) {
+	          event.preventDefault();
+	          var $form = $(this);
+	          var formData = new FormData($(this)[0]);
+
+	          $.ajax({
+	              type: $form.attr('method'),
+	              url: $form.attr('action'),
+	              data: formData,
+	              contentType: false,
+	              processData: false,
+	              success: function(result) {
+	                  var json = jQuery.parseJSON(JSON.stringify(result));
+	                  var error = json.error;
+	                  var success = json.success;
+	                  var errorMessage = "";
+
+	                  $.each(success, function(id, message) {
+	                      $(id).css('box-shadow', '0px 0px 0px 1px green');
+	                  });
+
+	                  $.each(error, function(id, message) {
+	                      $(id).css('box-shadow', '0px 0px 0px 1px red');
+	                      errorMessage += '<p>' + message + '</p>';
+	                  });
+
+	                  if (!errorMessage) {
+	                      notice('Вы успешно зарегестрированы');
+	                      setTimeout(function() {
+	                          location.href = "/login"
+	                      }, 2500);
+	                  } else {
+	                      notice(errorMessage);
+	                  }
+	              },
+	              error: function(result) {
+	                  alert('Server error');
+	              }
+	          });
+	      });
+	  });
+	  </script>
+      <? include('footer.html'); ?>
+      <div class="notificate"></div>
+   </body>
+</html>

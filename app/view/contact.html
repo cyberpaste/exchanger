@@ -1,0 +1,54 @@
+<html>
+   <head>
+      <? include('head.html'); ?>
+   </head>
+   <body>
+      <? include ('header.html'); ?>
+      <div class="block-2">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
+               </div>
+               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 center">
+                  <div class="tab tab-1 main-tab">
+                     <div class="top">
+                        <div class="title">Контакты</div>
+                     </div>
+                     <div class="content">
+                        <p>По всем вопросам можно писать на почту <b><?=$email;?></b> или написать через форму ниже.</p>
+                        
+						<div class="row">
+						 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 center">
+						<form action="" method="POST" class="qiwibtc">
+                           <div class="form-group">
+                              <label>Имя</label>
+                              <input type="text" class="form-control" name="name">
+                           </div>
+                           <div class="form-group">
+                              <label>Сообщение</label>
+                              <textarea class="form-control" rows="5" name="message"></textarea>
+                           </div>
+						   <div class="form-group">
+						    <label>Решите пример:</label><img src="/captcha">
+							<input type="text" class="form-control" placeholder="Введите число" name="captcha">
+						   </div>
+						   
+                           <div class="form-group">
+                              <button type="submit" class="btn btn-primary btn-lg">Отправить</button>
+                           </div>
+                        </form>
+						</div>
+						</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
+            </div>
+         </div>
+      </div>
+      </div>
+      <? include('footer.html'); ?>
+      <div class="notificate"></div>
+   </body>
+</html>

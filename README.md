@@ -1,6 +1,8 @@
 # exchanger
 Обменник валют
+
 ![preview](https://raw.githubusercontent.com/cyberpaste/exchanger/master/preview.jpg)
+
 ## Функционал
 - [X] Регистрация, Авторизация, Восстановление пароля
 - [X] Правила

@@ -7,39 +7,38 @@
         <div class="block-2">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-2 col-xs-12">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 center">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 center">
                         <div class="tab tab-1 main-tab">
                             <div class="top">
-                                <div class="title">Регистрация</div>
+                                <div class="title"><?=$title?></div>
                             </div>
                             <div class="content">
-                                <form id="register" method="POST">
-                                    <div class="form-group">
-                                        <label>Имя</label>
-                                        <input type="text" class="form-control" name="name" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" name="email" id="email">
-                                    </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 center review">
+                                        <form id="account" method="POST">
+                                            <div class="form-group">
+                                                <label>Имя</label>
+                                                <input type="text" id="name" class="form-control" name="name" value="<?=$user['name'];?>">
+                                            </div>
 
-                                    <div class="form-group">
-                                        <label>Решите пример:</label><img src="/captcha">
-                                        <input type="text" class="form-control" placeholder="Введите число" name="captcha" id="captcha">
-                                    </div>
+                                            <div class="form-group">
+                                                <label>Решите пример:</label><img src="/captcha">
+                                                <input type="text" id="captcha" class="form-control" placeholder="Введите число" name="captcha">
+                                            </div>
 
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="rules" value="" id="rules">Соглашаюсь с <a href="/rules" target="_blank">Правилами</a></label>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-lg">Изменить</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg">Отправить</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
                 </div>
             </div>
         </div>
@@ -53,7 +52,7 @@
                     });
                 }
 
-                $('form#register').submit(function (event) {
+                $('form#account').submit(function (event) {
                     event.preventDefault();
                     var $form = $(this);
                     var formData = new FormData($(this)[0]);
@@ -80,9 +79,9 @@
                             });
 
                             if (!errorMessage) {
-                                notice('Вы успешно зарегестрированы');
+                                notice('Отредактировано!');
                                 setTimeout(function () {
-                                    location.href = "/login"
+                                    location.href = "/account/edit"
                                 }, 2500);
                             } else {
                                 notice(errorMessage);

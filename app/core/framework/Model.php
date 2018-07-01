@@ -43,7 +43,7 @@ class Model {
         return $queryResult;
     }
 
-    public function update($parameters,$where) {
+    public function update($parameters, $where) {
         $query = "UPDATE " . $this->table;
         $rowNames = [];
         $bindVars = [];
@@ -59,6 +59,11 @@ class Model {
         $query .= " SET " . implode(',', $rowNames) . " WHERE " . implode(',', $rowWhere) . " ";
         $queryResult = $this->db->execute($query, $bindVars);
         return $queryResult;
+    }
+
+    public function count() {
+        $queryResult = $this->db->fetch('SELECT COUNT(*) AS total FROM ' . $this->table, '');
+        return $queryResult['total'];
     }
 
 }

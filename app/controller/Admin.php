@@ -3,39 +3,29 @@
 namespace Controller;
 
 use Model\Users as User;
+use Model\Reviews as Review;
+use Traits\Admin as AdminTrait;
+use Traits\CurrentPage as CurrentPageTrait;
+use Traits\Template as TemplateTrait;
+use Traits\Construct as ConstructTrait;
 
 class Admin extends \Core\Framework\Controller {
 
-    public $userLogged;
+    use AdminTrait;
+    use CurrentPageTrait;
+    use TemplateTrait;
+    use ConstructTrait;
 
     public function __construct() {
         parent::__construct();
-        $user = new User;
-        $this->userLogged = $user->logged();
-        if ($this->userLogged) {
-            if ($user->isAdmin($this->userLogged['id'])) {
-                //continue
-            } else {
-                $this->redirectToMain();
-            }
-        } else {
-            $this->redirectToMain();
-        }
-    }
-
-    private function redirectToMain() {
-        $this->responce->setHeader('301')->redirectTo('/');
+        $this->checkIfAdminIsLogged();
+        $this->init();
     }
 
     public function index() {
-        $templateFile = 'admin.html';
-        $title = 'Админ панель';
-        $description = '';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title, 'description' => $description, 'domain' => $domain, 'email' => $email, 'currentUrl' => $currentUrl, 'user' => $this->userLogged];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+        $this->templateFile = 'admin.html';
+        $this->templateVariables['title'] = 'Админ панель';
+        $this->renderHtmlPage();
     }
 
     public function call($method = null) {
@@ -46,36 +36,34 @@ class Admin extends \Core\Framework\Controller {
     }
 
     public function ajax() {
-        $get = $this->request->getQuery();
-        $method = $get['method'];
+        $method = $this->get['method'];
         $this->call($method);
     }
 
     public function users() {
-        $get = $this->request->getQuery();
-        $limit = isset($get['limit']) ? (int) $get['limit'] : 10;
-        $page = isset($get['page']) ? (int) $get['page'] : 1;
+        $limit = isset($this->get['limit']) ? (int) $this->get['limit'] : 10;
+        $page = isset($this->get['page']) ? (int) $this->get['page'] : 1;
         $user = new User;
-
         $data['users'] = $user->getAllUsers(($page - 1) * $limit, $limit);
         $data['total'] = $user->count();
+        $this->templateFile = 'admin-users.html';
+        $this->templateVariables['title'] = 'Все пользователи';
+        $this->templateVariables['data'] = $data;
+        $this->templateVariables['page'] = $page;
+        $this->renderHtmlPage();
+    }
 
-        $templateFile = 'admin-users.html';
-        $title = 'Все пользователи';
-        $description = '';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title,
-            'description' => $description,
-            'domain' => $domain,
-            'email' => $email,
-            'currentUrl' => $currentUrl,
-            'user' => $this->userLogged,
-            'data' => $data,
-            'page' => $page,
-        ];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+    public function reviews() {
+        $limit = isset($this->get['limit']) ? (int) $this->get['limit'] : 10;
+        $page = isset($this->get['page']) ? (int) $this->get['page'] : 1;
+        $review = new Review;
+        $data['reviews'] = $review->getAllReviews(($page - 1) * $limit, $limit);
+        $data['total'] = $review->count();
+        $this->templateFile = 'admin-reviews.html';
+        $this->templateVariables['title'] = 'Все отзывы';
+        $this->templateVariables['data'] = $data;
+        $this->templateVariables['page'] = $page;
+        $this->renderHtmlPage();
     }
 
     public function GetAllUsers() {

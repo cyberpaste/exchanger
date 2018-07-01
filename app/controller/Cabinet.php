@@ -3,15 +3,22 @@
 namespace Controller;
 
 use Model\Users as User;
+use Traits\Login as LoginTrait;
+use Traits\CurrentPage as CurrentPageTrait;
+use Traits\Template as TemplateTrait;
+use Traits\Construct as ConstructTrait;
 
 class Cabinet extends \Core\Framework\Controller {
 
-    public $userLogged;
+    use LoginTrait;
+    use CurrentPageTrait;
+    use TemplateTrait;
+    use ConstructTrait;
 
     public function __construct() {
         parent::__construct();
-        $user = new User;
-        $this->userLogged = $user->logged();
+        $this->checkIfUserLogged();
+        $this->init();
     }
 
     public function logout() {
@@ -54,12 +61,11 @@ class Cabinet extends \Core\Framework\Controller {
             $salt = $this->helper->getRandomString(10);
             $hash = $this->helper->getHash($password, $salt);
             $user->update(['password' => $hash, 'salt' => $salt, 'restore_salt' => null], ['id' => $member['id']]);
-            $subject = 'Пароль восстановлен';
-            $message = "<p>Ваш новый пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
-            $templateVariables = ['message' => $message, 'subject' => $subject, 'domain' => $this->request->getDomainName()];
-            $templateFile = 'email.html';
-            $htmlMessage = $this->template->render($templateFile, $templateVariables);
-            $this->mail->notify($this->site['email'], $this->site['name'], $member['email'], $member['name'], $subject, $htmlMessage);
+            $this->templateVariables['subject'] = 'Пароль восстановлен';
+            $this->templateVariables['message'] = "<p>Ваш новый пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
+            $this->templateFile = 'email.html';
+            $htmlMessage = $this->renderEmail();
+            $this->mail->notify($this->site['email'], $this->site['name'], $member['email'], $member['name'], $this->templateVariables['subject'], $htmlMessage);
             $this->responce->setHeader('301')->redirectTo('/');
         } else {
             $this->responce->setHeader('404')->withData('Broken link');
@@ -67,102 +73,82 @@ class Cabinet extends \Core\Framework\Controller {
     }
 
     public function restoreGet() {
-        $templateFile = 'restore.html';
-        $title = 'Восстановление пароля';
-        $description = '';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title, 'description' => $description, 'domain' => $domain, 'email' => $email, 'currentUrl' => $currentUrl, 'user' => $this->userLogged];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+        $this->templateFile = 'restore.html';
+        $this->templateVariables['title'] = 'Восстановление пароля';
+        $this->renderHtmlPage();
     }
 
     public function restorePost() {
-        $post = $this->request->getBody();
-        $this->validator->email($post['email'], 'Неправильный email', '#email');
+        $this->validator->email($this->post['email'], 'Неправильный email', '#email');
         $user = new User;
-        $member = $user->getByEmail($post['email']);
-        if ($post['email'] && $member) {
+        $member = $user->getByEmail($this->post['email']);
+        if ($this->post['email'] && $member) {
             $password = $this->helper->getRandomString(10);
             $salt = $this->helper->getRandomString(10);
             $hash = $this->helper->getHash($password, $salt);
             $user->update(['restore_salt' => $hash, 'restore_time' => $this->helper->getCurrentTimestamp()], ['id' => $member['id']]);
             $restoreLink = $this->request->getDomainProtocol() . $this->request->getDomainName() . '/restore/' . $hash;
-            $subject = 'Ссылка на восстановление пароля';
-            $message = "<p>Для восстановления пароля перейдите по ссылке: <a href='" . $restoreLink . "'>" . $restoreLink . "</a>";
-            $templateVariables = ['message' => $message, 'subject' => $subject, 'domain' => $this->request->getDomainName()];
-            $templateFile = 'email.html';
-            $htmlMessage = $this->template->render($templateFile, $templateVariables);
-            $this->mail->notify($this->site['email'], $this->site['name'], $member['email'], $member['name'], $subject, $htmlMessage);
+            $this->templateVariables['subject'] = 'Ссылка на восстановление пароля';
+            $this->templateVariables['message'] = "<p>Для восстановления пароля перейдите по ссылке: <a href='" . $restoreLink . "'>" . $restoreLink . "</a>";
+            $this->templateFile = 'email.html';
+            $htmlMessage = $this->renderEmail();
+            $this->mail->notify($this->site['email'], $this->site['name'], $member['email'], $member['name'], $this->templateVariables['subject'], $htmlMessage);
         } else {
             $this->validator->customError('Email не найден', '#email');
         }
-        $this->responce->setHeader('json')->withJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
     }
 
     public function registerGet() {
-        $templateFile = 'register.html';
-        $title = 'Регистрация';
-        $description = '';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title, 'description' => $description, 'domain' => $domain, 'email' => $email, 'currentUrl' => $currentUrl, 'user' => $this->userLogged];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+        $this->templateFile = 'register.html';
+        $this->templateVariables['title'] = 'Регистрация';
+        $this->renderHtmlPage();
     }
 
     public function registerPost() {
-        $post = $this->request->getBody();
-        $this->validator->email($post['email'], 'Неправильный email', '#email');
+        $this->validator->email($this->post['email'], 'Неправильный email', '#email');
         $user = new User;
-        if ($post['email'] && $user->getByEmail($post['email'])) {
+        if ($this->post['email'] && $user->getByEmail($this->post['email'])) {
             $this->validator->customError('Email уже занят', '#email');
         }
-        $this->validator->length($post['name'], 4, 100, 'Неправильное имя', '#name');
-        $this->validator->equal($post['captcha'], $this->session->get('captcha'), 'Пример решен неверно', '#captcha');
-        $this->validator->notBlank($post['rules'], 'Нужно согласиться с правилами', '#rules');
+        $this->validator->length($this->post['name'], 4, 100, 'Неправильное имя', '#name');
+        $this->validator->equal($this->post['captcha'], $this->session->get('captcha'), 'Пример решен неверно', '#captcha');
+        $this->validator->notBlank($this->post['rules'], 'Нужно согласиться с правилами', '#rules');
         if (!count($this->validator->getError())) {
             $password = $this->helper->getRandomString(10);
             $salt = $this->helper->getRandomString(10);
             $hash = $this->helper->getHash($password, $salt);
-            $user->create(['email' => $post['email'], 'name' => $post['name'], 'password' => $hash, 'salt' => $salt]);
-            $subject = 'Успешная регистрация';
-            $message = "<p>Ваш пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
-            $templateVariables = ['message' => $message, 'subject' => $subject, 'domain' => $this->request->getDomainName()];
-            $templateFile = 'email.html';
-            $htmlMessage = $this->template->render($templateFile, $templateVariables);
-            $this->mail->notify($this->site['email'], $this->site['name'], $post['email'], $post['name'], $subject, $htmlMessage);
+            $user->create(['email' => $this->post['email'], 'name' => $this->post['name'], 'password' => $hash, 'salt' => $salt]);
+            $this->templateVariables['subject'] = 'Успешная регистрация';
+            $this->templateVariables['message'] = "<p>Ваш пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
+            $this->templateFile = 'email.html';
+            $htmlMessage = $this->renderEmail();
+            $this->mail->notify($this->site['email'], $this->site['name'], $this->post['email'], $this->post['name'], $this->templateVariables['subject'], $htmlMessage);
         }
-        $this->responce->setHeader('json')->withJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
     }
 
     public function loginGet() {
-        $templateFile = 'login.html';
-        $title = 'Вход';
-        $description = '';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title, 'description' => $description, 'domain' => $domain, 'email' => $email, 'currentUrl' => $currentUrl, 'user' => $this->userLogged];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+        $this->templateFile = 'login.html';
+        $this->templateVariables['title'] = 'Вход';
+        $this->renderHtmlPage();
     }
 
     public function loginPost() {
-        $post = $this->request->getBody();
-        $this->validator->email($post['email'], 'Неправильный email', '#email');
-        $this->validator->notBlank($post['password'], 'Пароль пуст', '#password');
+        $this->validator->email($this->post['email'], 'Неправильный email', '#email');
+        $this->validator->notBlank($this->post['password'], 'Пароль пуст', '#password');
         $user = new User;
-        if ($post['email'] && !$member = $user->getByEmail($post['email'])) {
+        if ($this->post['email'] && !$member = $user->getByEmail($this->post['email'])) {
             $this->validator->customError('Email не существует', '#email');
         } else {
-            if ($this->helper->getHash($post['password'], $member['salt']) == $member['password']) {
+            if ($this->helper->getHash($this->post['password'], $member['salt']) == $member['password']) {
                 $user->update(['lastlogin' => $this->helper->getCurrentTimestamp()], ['id' => $member['id']]);
                 $this->session->set('user', $member['id']);
             } else {
                 $this->validator->customError('Пароль неверный', '#password');
             }
         }
-        $this->responce->setHeader('json')->withJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
     }
 
 }

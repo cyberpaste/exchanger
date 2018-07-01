@@ -1,0 +1,74 @@
+<?php
+use \Core\Framework\Helper as Helper;
+$pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page,$data['total']);
+
+?>
+
+<html>
+    <head>
+        <? include('head.html'); ?>
+    </head>
+    <body>
+        <? include ('header.html'); ?>
+        <div class="block-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <? include('admin-menu.html');?>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 center">
+                        <div class="tab tab-1 main-tab">
+                            <div class="top">
+                                <div class="title"><?=$title;?></div>
+                            </div>
+                            <div class="content">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-lg small-button">Добавить отзыв</button>
+                                </div>
+                                <div class="table-responsive"> 
+                                    <table class="table"> 
+                                        <thead> 
+                                            <tr> 
+                                                <th>#</th> 
+                                                <th>Имя</th> 
+                                                <th>Отзыв</th> 
+                                                <th>Дата</th> 
+                                                <th>Модерация</th> 
+                                                <th>Действия</th>
+                                            </tr> 
+                                        </thead> 
+                                        <tbody> 
+                                            <? foreach($data['reviews'] as $item){?>
+                                            <tr> 
+                                                <th scope="row"><?=$item['id']?></th> 
+                                                <td><?=$item['name']?></td> 
+                                                <td><?=Helper::Truncate($item['message'])?></td> 
+                                                <td style="min-width:180px;"><?=$item['time']?></td> 
+                                                <td>
+                                                    <? if($item['moderation']){?>
+                                                    <img class="small-icon" src="/assets/img/approved-icon.svg">
+                                                    <?}else{?>
+                                                    <img class="small-icon" src="/assets/img/blank-icon.svg">
+                                                    <?}?>
+                                                </td>
+                                                <td style="min-width:120px;">
+                                                    <img class="small-icon" src="/assets/img/view-icon.svg">
+                                                    <img class="small-icon" src="/assets/img/edit-icon.svg">
+                                                    <img class="small-icon" src="/assets/img/delete-icon.svg">
+                                                </td>
+                                            </tr> 
+                                            <? }?>
+                                        </tbody> 
+                                    </table> 
+                                </div>
+                                <?=$pagination;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <? include('footer.html'); ?>
+        <div class="notificate"></div>
+    </body>
+</html>

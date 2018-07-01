@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <? include('head.html'); ?>
+    </head>
+    <body>
+        <? include ('header.html'); ?>
+        <div class="block-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 center">
+                        <div class="tab tab-1 main-tab">
+                            <div class="top">
+                                <div class="title"><?=$title?></div>
+                            </div>
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 center text-center">
+                                        <h4>Личные данные</h4>
+                                        <a href="/account/edit">
+                                            <img class="account-icon" src="/assets/img/account-icon.svg">   
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 center">
+                </div>
+            </div>
+        </div>
+        <? include('footer.html'); ?>
+        <div class="notificate"></div>
+    </body>
+</html>

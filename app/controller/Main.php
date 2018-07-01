@@ -2,16 +2,22 @@
 
 namespace Controller;
 
-use Model\Users as User;
+use Traits\Login as LoginTrait;
+use Traits\CurrentPage as CurrentPageTrait;
+use Traits\Template as TemplateTrait;
+use Traits\Construct as ConstructTrait;
 
 class Main extends \Core\Framework\Controller {
 
-    public $userLogged;
+    use LoginTrait;
+    use CurrentPageTrait;
+    use TemplateTrait;
+    use ConstructTrait;
 
     public function __construct() {
         parent::__construct();
-        $user = new User;
-        $this->userLogged = $user->logged();
+        $this->checkIfUserLogged();
+        $this->init();
     }
 
     public function Index() {
@@ -24,14 +30,10 @@ class Main extends \Core\Framework\Controller {
     }
 
     public function IndexGet() {
-        $templateFile = 'main.html';
-        $title = 'Быстрый обмен криптовалют';
-        $description = 'Exchanger - быстрый обмен валют: USD, RUB, BTC, ETH, LTC, DASH .. Работаем с: 10.02.2017';
-        $domain = $this->request->getDomainName();
-        $currentUrl = $this->request->getRequestUrl();
-        $email = $this->site['email'];
-        $templateVariables = ['title' => $title, 'description' => $description, 'domain' => $domain, 'email' => $email, 'currentUrl' => $currentUrl, 'user' => $this->userLogged];
-        $this->responce->setHeader('html')->withData($this->template->render($templateFile, $templateVariables));
+        $this->templateFile = 'main.html';
+        $this->templateVariables['title'] = 'Быстрый обмен криптовалют';
+        $this->templateVariables['description'] = 'Exchanger - быстрый обмен валют: USD, RUB, BTC, ETH, LTC, DASH .. Работаем с: 10.02.2017';
+        $this->renderHtmlPage();
     }
 
     public function PairExists() {

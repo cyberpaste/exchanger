@@ -7,6 +7,7 @@ return [
     '/login'  => 'Controller\Cabinet@login',
     '/register'  => 'Controller\Cabinet@register',
     '/rules'  => 'Controller\Rules@index',
+    '/partners'  => 'Controller\Partners@index',
     '/reviews'  => 'Controller\Reviews@index',    
     '/logout'  => 'Controller\Cabinet@logout',
     '/restore' => 'Controller\Cabinet@restore',
@@ -16,5 +17,7 @@ return [
     '/r/:num' => 'Controller\Referral@index',
     '/admin' => 'Controller\Admin@index',
     '/admin/:any' => 'Controller\Admin@call',
+    '/account' => 'Controller\Account@index',
+    '/account/:any' => 'Controller\Account@call',
     ':any' => 'Controller\Notfound@index',
 ];

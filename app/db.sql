@@ -21,10 +21,18 @@ CREATE TABLE IF NOT EXISTS `fields` (
   `checktype` VARCHAR(50)
 );
 
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` INT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(50),
+  `type` VARCHAR(50),
+  `message` VARCHAR(250)
+);
+
 CREATE TABLE IF NOT EXISTS `reviews` (
   `id` INT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(50),
   `message` VARCHAR(250), 
+  `moderation` TINYINT(1) DEFAULT '0',
   `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

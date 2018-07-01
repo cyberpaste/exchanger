@@ -48,9 +48,4 @@ class Users extends \Core\Framework\Model {
         return $queryResult;
     }
 
-    public function count() {
-        $queryResult = $this->db->fetch('SELECT COUNT(*) AS total FROM ' . $this->table, '');
-        return $queryResult['total'];
-    }
-
 }

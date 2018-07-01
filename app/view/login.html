@@ -1,100 +1,100 @@
 <html>
-   <head>
-      <? include('head.html'); ?>
-   </head>
-   <body>
-      <? include ('header.html'); ?>
-      <div class="block-2">
-         <div class="container">
-            <div class="row">
-               <div class="col-lg-4 col-md-4 col-sm-2 col-xs-12">
-               </div>
-               <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 center">
-                  <div class="tab tab-1 main-tab">
-                     <div class="top">
-                        <div class="title">Вход</div>
-                     </div>
-                     <div class="content">
-                        <form action="" method="POST" id="login">
-                           <div class="form-group">
-                              <label>Email</label>
-                              <input type="text" class="form-control" id="email" name="email">
-                           </div>
-                           <div class="form-group">
-                              <label>Пароль</label>
-                              <input type="password" class="form-control" id="password" name="password">
-                           </div>
-                           <div class="form-group">
-                              <button type="submit" class="btn btn-primary btn-lg qiwibtcSUB">Вход</button>
-                           </div>
-						   <div class="row">
-                              <div class="col-md-6 text-center">
-                                 <a href="/register">Регистрация</a> 
-                              </div>
-                              <div class="col-md-6 text-center">
-                                 <a href="/restore">Восстановить</a>
-                              </div>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
+    <head>
+        <? include('head.html'); ?>
+    </head>
+    <body>
+        <? include ('header.html'); ?>
+        <div class="block-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-2 col-xs-12">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12 center">
+                        <div class="tab tab-1 main-tab">
+                            <div class="top">
+                                <div class="title">Вход</div>
+                            </div>
+                            <div class="content">
+                                <form action="" method="POST" id="login">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" id="email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Пароль</label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg qiwibtcSUB">Вход</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 text-center">
+                                            <a href="/register">Регистрация</a> 
+                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <a href="/restore">Восстановить</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-	  	  <script>
-      $(document).ready(function() {
-	      function notice(text) {
-	          $('.notificate').html(text);
-	          $('.notificate').css('bottom', '30px');
-	          $('.notificate').oneTime(2500, function() {
-	              $('.notificate').css('bottom', '-250px');
-	          });
-	      }
+        </div>
+        <script>
+            $(document).ready(function () {
+                function notice(text) {
+                    $('.notificate').html(text);
+                    $('.notificate').css('bottom', '30px');
+                    $('.notificate').oneTime(2500, function () {
+                        $('.notificate').css('bottom', '-250px');
+                    });
+                }
 
-	      $('form#login').submit(function(event) {
-	          event.preventDefault();
-	          var $form = $(this);
-	          var formData = new FormData($(this)[0]);
+                $('form#login').submit(function (event) {
+                    event.preventDefault();
+                    var $form = $(this);
+                    var formData = new FormData($(this)[0]);
 
-	          $.ajax({
-	              type: $form.attr('method'),
-	              url: $form.attr('action'),
-	              data: formData,
-	              contentType: false,
-	              processData: false,
-	              success: function(result) {
-	                  var json = jQuery.parseJSON(JSON.stringify(result));
-	                  var error = json.error;
-	                  var success = json.success;
-	                  var errorMessage = "";
+                    $.ajax({
+                        type: $form.attr('method'),
+                        url: $form.attr('action'),
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (result) {
+                            var json = jQuery.parseJSON(JSON.stringify(result));
+                            var error = json.error;
+                            var success = json.success;
+                            var errorMessage = "";
 
-	                  $.each(success, function(id, message) {
-	                      $(id).css('box-shadow', '0px 0px 0px 1px green');
-	                  });
+                            $.each(success, function (id, message) {
+                                $(id).css('box-shadow', '0px 0px 0px 1px green');
+                            });
 
-	                  $.each(error, function(id, message) {
-	                      $(id).css('box-shadow', '0px 0px 0px 1px red');
-	                      errorMessage += '<p>' + message + '</p>';
-	                  });
+                            $.each(error, function (id, message) {
+                                $(id).css('box-shadow', '0px 0px 0px 1px red');
+                                errorMessage += '<p>' + message + '</p>';
+                            });
 
-	                  if (!errorMessage) {
-	                      notice('Успешный вход');
-	                      setTimeout(function() {
-	                          location.href = "/"
-	                      }, 2500);
-	                  } else {
-	                      notice(errorMessage);
-	                  }
-	              },
-	              error: function(result) {
-	                  alert('Server error');
-	              }
-	          });
-	      });
-	  });
-	  </script>
-      <? include('footer.html'); ?>
-      <div class="notificate"></div>
-   </body>
+                            if (!errorMessage) {
+                                notice('Успешный вход');
+                                setTimeout(function () {
+                                    location.href = "/"
+                                }, 2500);
+                            } else {
+                                notice(errorMessage);
+                            }
+                        },
+                        error: function (result) {
+                            alert('Server error');
+                        }
+                    });
+                });
+            });
+        </script>
+        <? include('footer.html'); ?>
+        <div class="notificate"></div>
+    </body>
 </html>

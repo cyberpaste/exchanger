@@ -7,7 +7,7 @@ use Traits\CurrentPage as CurrentPageTrait;
 use Traits\Template as TemplateTrait;
 use Traits\Construct as ConstructTrait;
 
-class Notfound extends \Core\Framework\Controller {
+class Partners extends \Core\Framework\Controller {
 
     use LoginTrait;
     use CurrentPageTrait;
@@ -20,11 +20,24 @@ class Notfound extends \Core\Framework\Controller {
         $this->init();
     }
 
-    public function index() {
-        $this->templateFile = '404.html';
-        $this->templateVariables['title'] = '404 страница не найдена';
-        $this->responce->setHeader('404');
+    public function Index() {
+        if ($this->request->isGet()) {
+            $this->IndexGet();
+        }
+        if ($this->request->isPost()) {
+            $this->IndexPost();
+        }
+    }
+
+    public function IndexGet() {
+        $this->templateFile = 'partners.html';
+        $this->templateVariables['title'] = 'Партнеры';
         $this->renderHtmlPage();
     }
 
+    public function IndexPost() {
+        
+    }
+
 }
+

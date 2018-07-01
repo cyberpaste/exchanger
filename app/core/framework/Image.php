@@ -11,7 +11,7 @@ class Image {
         return imagepng($QR);
     }
 
-    public function getCaptchaMath($a, $b) {
+    public static function getCaptchaMath($a, $b) {
         $c = "";
         $result = "";
         $type = rand(0,1);
@@ -26,7 +26,7 @@ class Image {
                 break;
         }
         $letters = $a . $c . $b;
-        $caplen = 4;
+        $caplen = strlen($letters);
         $width = 120;
         $height = 40;
         $font = __DIR__ . '/fonts/captcha.ttf';

@@ -27,4 +27,8 @@ class Helper {
         return date("Y-m-d H:i:s", $this->getCurrentUnixTime());
     }
 
+    public static function Truncate($text, $textEnd = '...', $start = 0, $end = 100) {
+        return mb_substr($text, $start, $end) . $textEnd;
+    }
+
 }

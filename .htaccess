@@ -1,0 +1,20 @@
+RewriteEngine On
+
+SetEnvIfNoCase User-Agent "^MJ12bot" bad_bot
+
+<Limit GET POST HEAD>
+Deny from env=bad_bot
+</Limit>
+
+<FilesMatch "(console)">
+deny from all
+</FilesMatch>
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

@@ -1,3 +1,8 @@
+<?php
+use \Core\Framework\Helper as Helper;
+$pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page,$data['total']);
+
+?>
 <html>
     <head>
         <? include('head.html'); ?>
@@ -16,35 +21,22 @@
                             </div>
                             <div class="content">
                                 <div class="row">
+                                    <? if($data['reviews']){?>
+                                    <? foreach($data['reviews'] as $item){?>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 review" style="border-left:3px solid black;">
-                                        <h5><b>Alex</b> 22.10.2018 15:22</h5>
-                                        <p>Отличный обменник, суперский онлайн оператор. Совершил уже 4 крупных обмена, только положительные эмоции.</p>
+                                        <h5><b><?=Helper::Filter($item['name'])?></b> <?=$item['time']?></h5>
+                                        <p><?=Helper::Filter($item['message'])?></p>
                                     </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 review" style="border-left:3px solid black;">
-                                        <h5><b>Alex</b> 22.10.2018 15:22</h5>
-                                        <p>В чате отвечают моментально. Выгодный курс обмена при удобном 
-                                            графике работы по Европе. Менял BTC на USD, через WESTERN uniоn 
-                                            обещают что деньги прийдут в течение 1-6 часов. Ждём.
-                                            Ещё один большой +. Создал заявку на одну сумму, а отправил чуть больше. В чате меня 
-                                            оперативно оповестили о том что сумма, которую отправил больше. Хотел оставить на чай. 
-                                            Но нет попросили пересоздать заявку. При этом BTC не возврошали и не просили заново отправлять. 
-                                            Что в других обмениках. И трата доп. 
-                                            времени и комиссий, на ненужные операции… Комиссия на Western uniоn так же меньше чем у
-                                            других. Не самая маленькая, но и не самая большая.
-                                        </p>
+                                    <? } ?>
+                                    <?} else {?>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 review">                                       
+                                        <p>Будете первым, кто оставит отзыв</p>
                                     </div>
+                                    <?}?>
                                 </div>
                             </div>
                         </div>
-                        <ul class="pagination">
-                            <li><a href="#" title="Первая страница">&laquo;</a></li>
-                            <li class="active"><span>1</span></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#" title="Последняя страница">&raquo;</a></li>
-                        </ul>
+                        <?=$pagination;?>
 
                         <div class="tab tab-1 main-tab">
                             <div class="top">

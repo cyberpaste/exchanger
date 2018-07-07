@@ -31,8 +31,15 @@ class Reviews extends \Core\Framework\Controller {
     }
 
     public function IndexGet() {
+        $limit = isset($this->get['limit']) ? (int) $this->get['limit'] : 10;
+        $page = isset($this->get['page']) ? (int) $this->get['page'] : 1;
+        $review = new Review;
+        $data['reviews'] = $review->getModeratedReviews(($page - 1) * $limit, $limit);
+        $data['total'] = $review->count();
         $this->templateFile = 'reviews.html';
         $this->templateVariables['title'] = 'Отзывы';
+        $this->templateVariables['data'] = $data;
+        $this->templateVariables['page'] = $page;
         $this->renderHtmlPage();
     }
 

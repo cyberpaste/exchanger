@@ -31,4 +31,7 @@ class Helper {
         return mb_substr($text, $start, $end) . $textEnd;
     }
 
+    public static function Filter($text){
+        return htmlspecialchars($text);
+    }
 }

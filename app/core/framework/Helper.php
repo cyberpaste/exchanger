@@ -4,7 +4,7 @@ namespace Core\Framework;
 
 class Helper {
 
-    public function getRandomString($length) {
+    public static function getRandomString($length) {
         $characters = '123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -14,17 +14,17 @@ class Helper {
         return $randomString;
     }
 
-    public function getHash($string, $salt = null) {
+    public static function getHash($string, $salt = null) {
         return(md5($string . $salt));
     }
 
-    public function getCurrentUnixTime() {
+    public static function getCurrentUnixTime() {
         $dateTime = new \DateTime();
         return $dateTime->getTimestamp();
     }
 
-    public function getCurrentTimestamp() {
-        return date("Y-m-d H:i:s", $this->getCurrentUnixTime());
+    public static function getCurrentTimestamp() {
+        return date("Y-m-d H:i:s", self::getCurrentUnixTime());
     }
 
     public static function Truncate($text, $textEnd = '...', $start = 0, $end = 100) {

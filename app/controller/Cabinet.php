@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Model\Users as User;
+use Core\Framework\Helper as Helper;
 use Traits\Login as LoginTrait;
 use Traits\CurrentPage as CurrentPageTrait;
 use Traits\Template as TemplateTrait;
@@ -57,9 +58,9 @@ class Cabinet extends \Core\Framework\Controller {
         $user = new User;
         $member = $user->getByRestoreHash($hash);
         if ($member) {
-            $password = $this->helper->getRandomString(10);
-            $salt = $this->helper->getRandomString(10);
-            $hash = $this->helper->getHash($password, $salt);
+            $password = Helper::getRandomString(10);
+            $salt = Helper::getRandomString(10);
+            $hash = Helper::getHash($password, $salt);
             $user->update(['password' => $hash, 'salt' => $salt, 'restore_salt' => null], ['id' => $member['id']]);
             $this->templateVariables['subject'] = 'Пароль восстановлен';
             $this->templateVariables['message'] = "<p>Ваш новый пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
@@ -83,10 +84,10 @@ class Cabinet extends \Core\Framework\Controller {
         $user = new User;
         $member = $user->getByEmail($this->post['email']);
         if ($this->post['email'] && $member) {
-            $password = $this->helper->getRandomString(10);
-            $salt = $this->helper->getRandomString(10);
-            $hash = $this->helper->getHash($password, $salt);
-            $user->update(['restore_salt' => $hash, 'restore_time' => $this->helper->getCurrentTimestamp()], ['id' => $member['id']]);
+            $password = Helper::getRandomString(10);
+            $salt = Helper::getRandomString(10);
+            $hash = Helper::getHash($password, $salt);
+            $user->update(['restore_salt' => $hash, 'restore_time' => Helper::getCurrentTimestamp()], ['id' => $member['id']]);
             $restoreLink = $this->request->getDomainProtocol() . $this->request->getDomainName() . '/restore/' . $hash;
             $this->templateVariables['subject'] = 'Ссылка на восстановление пароля';
             $this->templateVariables['message'] = "<p>Для восстановления пароля перейдите по ссылке: <a href='" . $restoreLink . "'>" . $restoreLink . "</a>";
@@ -115,9 +116,9 @@ class Cabinet extends \Core\Framework\Controller {
         $this->validator->equal($this->post['captcha'], $this->session->get('captcha'), 'Пример решен неверно', '#captcha');
         $this->validator->notBlank($this->post['rules'], 'Нужно согласиться с правилами', '#rules');
         if (!count($this->validator->getError())) {
-            $password = $this->helper->getRandomString(10);
-            $salt = $this->helper->getRandomString(10);
-            $hash = $this->helper->getHash($password, $salt);
+            $password = Helper::getRandomString(10);
+            $salt = Helper::getRandomString(10);
+            $hash = Helper::getHash($password, $salt);
             $user->create(['email' => $this->post['email'], 'name' => $this->post['name'], 'password' => $hash, 'salt' => $salt]);
             $this->templateVariables['subject'] = 'Успешная регистрация';
             $this->templateVariables['message'] = "<p>Ваш пароль для входа в личный кабинет: <b>" . $password . "</b></p>";
@@ -141,8 +142,8 @@ class Cabinet extends \Core\Framework\Controller {
         if ($this->post['email'] && !$member = $user->getByEmail($this->post['email'])) {
             $this->validator->customError('Email не существует', '#email');
         } else {
-            if ($this->helper->getHash($this->post['password'], $member['salt']) == $member['password']) {
-                $user->update(['lastlogin' => $this->helper->getCurrentTimestamp()], ['id' => $member['id']]);
+            if (Helper::getHash($this->post['password'], $member['salt']) == $member['password']) {
+                $user->updateLastLogin($member['id']);
                 $this->session->set('user', $member['id']);
             } else {
                 $this->validator->customError('Пароль неверный', '#password');

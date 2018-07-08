@@ -3,6 +3,7 @@
 namespace Model;
 
 use Core\Framework\Session as Session;
+use \Core\Framework\Helper as Helper;
 
 class Users extends \Core\Framework\Model {
 
@@ -15,6 +16,18 @@ class Users extends \Core\Framework\Model {
             return $this->getById($userId);
         }
         return false;
+    }
+
+    public function createNew($email, $name, $password, $salt) {
+        return $this->create(['email' => $email, 'name' => Helper::Filter($name), 'password' => $password, 'salt' => $salt]);
+    }
+
+    public function updateName($name, $id) {
+        return $this->update(['name' => Helper::Filter($name)], ['id' => $id]);
+    }
+
+    public function updateLastLogin($id) {
+        return $this->update(['lastlogin' => Helper::getCurrentTimestamp()], ['id' => $id]);
     }
 
     public function isAdmin($value) {

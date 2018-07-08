@@ -61,6 +61,19 @@ class Model {
         return $queryResult;
     }
 
+    public function delete($where) {
+        $query = "DELETE FROM " . $this->table;
+        $rowWhere = [];
+        $bindVars = [];
+        foreach ($where as $row => $value) {
+            $rowWhere[] = $row . ' = ? ';
+            $bindVars[] = $value;
+        }
+        $query .= " WHERE " . implode(',', $rowWhere) . " ";
+        $queryResult = $this->db->execute($query, $bindVars);
+        return $queryResult;
+    }
+
     public function count() {
         $queryResult = $this->db->fetch('SELECT COUNT(*) AS total FROM ' . $this->table, '');
         return $queryResult['total'];

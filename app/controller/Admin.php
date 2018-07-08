@@ -37,7 +37,9 @@ class Admin extends \Core\Framework\Controller {
 
     public function ajax() {
         $method = $this->get['method'];
-        $this->call($method);
+        if (method_exists($this, $method) && !in_array($method, [__FUNCTION__, 'call', 'index'])) {
+            $this->call($method);
+        }
     }
 
     public function users() {
@@ -66,14 +68,62 @@ class Admin extends \Core\Framework\Controller {
         $this->renderHtmlPage();
     }
 
-    public function GetAllUsers() {
-        /* $user = new User;
-          $get = $this->request->getQuery();
-          $limit = isset($get['limit']) ? (int) $get['limit'] : 10;
-          $offset = isset($get['offset']) ? (int) $get['offset'] : 0;
-          $data['users'] = $user->getAllUsers($offset, $limit);
-          $data['total'] = $user->count();
-          $this->responce->setHeader('json')->withJson($data); */
+    public function getReview() {
+        $id = isset($this->get['id']) ? (int) $this->get['id'] : 0;
+        $review = new Review;
+        $item = $review->getById($id);
+        $this->renderJson(['item' => $item]);
+    }
+
+    public function addReview() {
+        $this->validator->length($this->post['name'], 4, 100, 'Неправильное имя', '#name');
+        $this->validator->length($this->post['message'], 50, 2500, 'Отзыв должен быть в пределах 50-2500 символов', '#message');
+        if (!count($this->validator->getError())) {
+            $review = new Review;
+            $review->createNewReview($this->post['name'], $this->post['message']);
+        }
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+    }
+
+    public function deleteReview() {
+        $id = isset($this->get['id']) ? (int) $this->get['id'] : 0;
+        $review = new Review;
+        if ($id && $review->getById($id)) {
+            $review->deleteById($id);
+        } else {
+            $this->validator->customError('Отзыв не найден', '#null');
+        }
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+    }
+
+    public function moderateReview() {
+        $id = isset($this->get['id']) ? (int) $this->get['id'] : 0;
+        $review = new Review;
+        if ($id && $item = $review->getById($id)) {
+            $moderation = '0';
+            if ($item['moderation'] == '0') {
+                $moderation = '1';
+            }
+            $review->moderateById($id, $moderation);
+        } else {
+            $this->validator->customError('Отзыв не найден', '#null');
+        }
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
+    }
+
+    public function editReview() {
+        $id = isset($this->post['id']) ? (int) $this->post['id'] : 0;
+        $review = new Review;
+        if ($id && $review->getById($id)) {
+            $this->validator->length($this->post['name'], 4, 100, 'Неправильное имя', '#name');
+            $this->validator->length($this->post['message'], 50, 2500, 'Отзыв должен быть в пределах 50-2500 символов', '#message');
+            if (!count($this->validator->getError())) {
+                $review->updateById($id, $this->post['name'], $this->post['message']);
+            }
+        } else {
+            $this->validator->customError('Отзыв не найден', '#null');
+        }
+        $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
     }
 
 }

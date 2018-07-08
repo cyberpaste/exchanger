@@ -1,9 +1,7 @@
 <?php
 use \Core\Framework\Helper as Helper;
 $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page,$data['total']);
-
 ?>
-
 <html>
     <head>
         <? include('head.html'); ?>
@@ -23,7 +21,7 @@ $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page
                             </div>
                             <div class="content">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg small-button">Добавить отзыв</button>
+                                    <button type="submit" class="btn btn-primary btn-lg small-button" id="addnewreview" data-toggle="modal" data-target="#modal">Добавить отзыв</button>
                                 </div>
                                 <div class="table-responsive"> 
                                     <table class="table"> 
@@ -45,16 +43,21 @@ $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page
                                                 <td><?=Helper::Truncate($item['message'])?></td> 
                                                 <td style="min-width:180px;"><?=$item['time']?></td> 
                                                 <td>
-                                                    <? if($item['moderation']){?>
-                                                    <img class="small-icon" src="/assets/img/approved-icon.svg">
-                                                    <?}else{?>
-                                                    <img class="small-icon" src="/assets/img/blank-icon.svg">
-                                                    <?}?>
+                                                    <a id="deletereview" onclick="moderate('<?=$item['id']?>');">
+                                                        <? if($item['moderation']){?>
+                                                        <img class="small-icon" src="/assets/img/approved-icon.svg">
+                                                        <?}else{?>
+                                                        <img class="small-icon" src="/assets/img/blank-icon.svg">
+                                                        <?}?>
+                                                    </a>
                                                 </td>
                                                 <td style="min-width:120px;">
-                                                    <img class="small-icon" src="/assets/img/view-icon.svg">
-                                                    <img class="small-icon" src="/assets/img/edit-icon.svg">
-                                                    <img class="small-icon" src="/assets/img/delete-icon.svg">
+                                                    <a id="editreview" data-toggle="modal" data-target="#modal" onclick="$('#row').val('<?=$item['id']?>'); edit();">
+                                                        <img class="small-icon" src="/assets/img/edit-icon.svg">
+                                                    </a>
+                                                    <a id="deletereview" onclick="del('<?=$item['id']?>');">
+                                                        <img class="small-icon" src="/assets/img/delete-icon.svg">
+                                                    </a>
                                                 </td>
                                             </tr> 
                                             <? }?>
@@ -68,7 +71,161 @@ $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page
                 </div>
             </div>
         </div>
+        <script>
+function notice(text) {
+    $('.notificate').html(text);
+    $('.notificate').css('bottom', '30px');
+    $('.notificate').oneTime(2500, function() {
+        $('.notificate').css('bottom', '-250px');
+    });
+}
+
+
+$("#addnewreview").click(function() {
+    $('#modaltitle').html('Добавить отзыв');
+    $('form#review').attr('action', "/admin/ajax?method=addReview");
+    $('#row').val('0');
+});
+
+function edit() {
+    $('#modaltitle').html('Редактировать отзыв');
+    $('form#review').attr('action', "/admin/ajax?method=editReview");
+    $.ajax({
+        type: 'get',
+        url: '/admin/ajax?method=getReview&id=' + $('#row').val(),
+        data: '',
+        contentType: false,
+        processData: false,
+        success: function(result) {
+            var json = jQuery.parseJSON(JSON.stringify(result));
+            $('#name').val(json.item.name);
+            $('#message').val(json.item.message);
+        },
+        error: function(result) {
+            alert('Server error');
+        }
+    });
+}
+
+function del(id) {
+    $.ajax({
+        type: 'get',
+        url: '/admin/ajax?method=deleteReview&id=' + id,
+        data: '',
+        contentType: false,
+        processData: false,
+        success: function(result) {
+            notice('Успех!');
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        },
+        error: function(result) {
+            alert('Server error');
+        }
+    });
+}
+
+
+function moderate(id) {
+    $.ajax({
+        type: 'get',
+        url: '/admin/ajax?method=moderateReview&id=' + id,
+        data: '',
+        contentType: false,
+        processData: false,
+        success: function(result) {
+            notice('Успех!');
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        },
+        error: function(result) {
+            alert('Server error');
+        }
+    });
+}
+
+
+
+
+$(document).ready(function() {
+
+    $('form#review').submit(function(event) {
+        event.preventDefault();
+        var $form = $(this);
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action'),
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(result) {
+                var json = jQuery.parseJSON(JSON.stringify(result));
+                var error = json.error;
+                var success = json.success;
+                var errorMessage = "";
+                $.each(success, function(id, message) {
+                    $(id).css('box-shadow', '0px 0px 0px 1px green');
+                });
+                $.each(error, function(id, message) {
+                    $(id).css('box-shadow', '0px 0px 0px 1px red');
+                    errorMessage += '<p>' + message + '</p>';
+                });
+                if (!errorMessage) {
+                    notice('Успех!');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2500);
+                } else {
+                    notice(errorMessage);
+                }
+            },
+            error: function(result) {
+                alert('Server error');
+            }
+        });
+    });
+});
+            
+
+
+        </script>
         <? include('footer.html'); ?>
         <div class="notificate"></div>
+        <!-- Modal -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title title" id="modaltitle">Отзыв</h4>
+                    </div>
+                    <form id="review" method="POST">
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label>Имя</label>
+                                <input type="text" id="name" class="form-control" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label>Отзыв</label>
+                                <textarea class="form-control" id="message" rows="5" name="message"></textarea>
+                            </div>
+                            <input type="hidden" id="row" name="id" value="">
+                            </form
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-lg">Отправить</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal end -->
     </body>
 </html>

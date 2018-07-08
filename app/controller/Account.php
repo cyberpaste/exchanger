@@ -39,7 +39,7 @@ class Account extends \Core\Framework\Controller {
             $this->validator->equal($this->post['captcha'], $this->session->get('captcha'), 'Пример решен неверно', '#captcha');
             if (!count($this->validator->getError())) {
                 $user = new User;
-                $user->update(['name' => $this->post['name']], ['id' => $this->userLogged['id']]);
+                $user->updateName($this->post['name'], $this->userLogged['id']);
             }
             $this->renderJson(['success' => $this->validator->getSuccess(), 'error' => $this->validator->getError()]);
         }

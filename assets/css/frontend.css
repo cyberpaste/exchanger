@@ -129,24 +129,24 @@ label, a, button{
     padding: 20px 25px;
     border-bottom: 1px solid #e6e9ec;
 }
-.block-2 .center .tab .top .title{
+.title{
     font-size: 24px;
 }
-.block-2 .center .tab .top .subtitle{
+ .subtitle{
     font-size: 12px;
 }
-.block-2 .center .tab .content{    
+.content{    
     padding: 25px;
 }
-.block-2 .center .tab .content .form-group{
+ .form-group{
     margin-bottom: 20px;
 }
-.block-2 .center .tab .content .form-group label{
+ .form-group label{
     font-size: 14px;
     color: #A1A1A1;
     font-weight: 600;
 }
-.block-2 .center .tab .content .form-group input{
+.form-group input{
     height: 46px;
     padding: 10px 16px;
     font-size: 18px;
@@ -158,7 +158,7 @@ label, a, button{
     font-family: 'Open Sans';
 }
 
-.block-2 .center .tab .content .form-group button{
+.form-group button{
 	box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.1);
     background: #fade23;
 	color:#222;
@@ -169,11 +169,20 @@ label, a, button{
     font-weight: 300;
     font-family: 'Open Sans';
 }
-.block-2 .center .tab .content .form-group button:hover{
+.form-group button:hover{
 	color:white;
     background: #222222;
 	transition: .9s;
 }
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+	color:white;
+    background: #222222;
+	transition: .9s;
+}
+
+
+
 .block-2 .center .tab .content .form-group .input-group{
     border-radius: 2px;
     transition: 350ms;

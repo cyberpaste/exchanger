@@ -28,7 +28,7 @@
                             <li <?if($currentUrl == '/reviews'){?>class="active"<?}?>><a href="/reviews">Отзывы</a></li>
                             <li <?if($currentUrl == '/partners'){?>class="active"<?}?>><a href="/partners">Партнерам</a></li>
                             <li <?if($currentUrl == '/contact'){?>class="active"<?}?>><a href="/contact">Контакты</a></li>
-                            <li class="dropdown <?if(in_array($currentUrl, ['/login', '/register', '/restore'])){?>active<?}?>">
+                            <li class="dropdown <?if(in_array($currentUrl, ['/login', '/register', '/restore','/account','/account/edit'])){?>active<?}?>">
                                 <a href="#" class="dropdown-toggle account" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? if($user){?><?=$user['name'];?><?}else{?>Личный кабинет<?}?> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <? if($user){?>

@@ -45,7 +45,7 @@ class Reviews extends \Core\Framework\Controller {
 
     public function IndexPost() {
         $this->validator->length($this->post['name'], 4, 100, 'Неправильное имя', '#name');
-        $this->validator->length($this->post['message'], 50, 2500, 'Отзыв должен быть в пределах 50-2500 символов', '#message');
+        $this->validator->length($this->post['message'], 50, 1000, 'Отзыв должен быть в пределах 50-1000 символов', '#message');
         $this->validator->equal($this->post['captcha'], $this->session->get('captcha'), 'Пример решен неверно', '#captcha');
         if (!count($this->validator->getError())) {
             $review = new Review;

@@ -40,25 +40,12 @@ class Users extends \Core\Framework\Model {
         return false;
     }
 
-    public function getById($value) {
-        $queryResult = $this->db->fetch('SELECT * FROM ' . $this->table . ' WHERE id = ? ', $value);
-        return $queryResult;
-    }
-
     public function getByEmail($value) {
         return $this->findBy(['email' => $value]);
     }
 
     public function getByRestoreHash($value) {
         return $this->findBy(['restore_salt' => $value]);
-    }
-
-    public function getAllUsers($offset = 0, $limit = 10) {
-        if ($offset < 0) {
-            $offset = 0;
-        }
-        $queryResult = $this->db->fetchAll('SELECT * FROM ' . $this->table . '  LIMIT ? OFFSET ? ', [$limit, $offset]);
-        return $queryResult;
     }
 
 }

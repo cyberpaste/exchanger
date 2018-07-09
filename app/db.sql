@@ -31,16 +31,16 @@ CREATE TABLE IF NOT EXISTS `messages` (
 CREATE TABLE IF NOT EXISTS `reviews` (
   `id` INT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(50),
-  `message` VARCHAR(250), 
+  `message` VARCHAR(500), 
   `moderation` TINYINT(1) DEFAULT '0',
   `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS `currency` (
   `id` INT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(50),
-  `message` VARCHAR(250), 
-  `checktype` VARCHAR(50)
+  `code` VARCHAR(50) UNIQUE, 
+  `name` VARCHAR(150), 
+  `active` TINYINT(1) DEFAULT '1'
 );
 
 CREATE TABLE IF NOT EXISTS `exchange` (

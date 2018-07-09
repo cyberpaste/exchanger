@@ -79,4 +79,20 @@ class Model {
         return $queryResult['total'];
     }
 
+    public function getAll($offset = 0, $limit = 10) {
+        if ($offset < 0) {
+            $offset = 0;
+        }
+        $queryResult = $this->db->fetchAll('SELECT * FROM ' . $this->table . '  LIMIT ? OFFSET ? ', [$limit, $offset]);
+        return $queryResult;
+    }
+
+    public function getById($id) {
+        return $this->findBy(['id' => $id]);
+    }
+
+    public function deleteById($id) {
+        return $this->delete(['id' => $id]);
+    }
+
 }

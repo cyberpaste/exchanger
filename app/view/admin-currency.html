@@ -21,7 +21,7 @@ $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page
                             </div>
                             <div class="content">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg small-button" id="addnewreview" data-toggle="modal" data-target="#modal">Добавить отзыв</button>
+                                    <button type="submit" class="btn btn-primary btn-lg small-button" id="addnewreview" data-toggle="modal" data-target="#modal">Добавить валюту</button>
                                 </div>
                                 <div class="table-responsive"> 
                                     <table class="table"> 
@@ -29,22 +29,20 @@ $pagination = \Core\Framework\Pagination::create($currentUrl.'?page=#page',$page
                                             <tr> 
                                                 <th>#</th> 
                                                 <th>Имя</th> 
-                                                <th>Отзыв</th> 
-                                                <th>Дата</th> 
-                                                <th>Модерация</th> 
+                                                <th>Код</th> 
+                                                <th>Активность</th> 
                                                 <th>Действия</th>
                                             </tr> 
                                         </thead> 
                                         <tbody> 
-                                            <? foreach($data['reviews'] as $item){?>
+                                            <? foreach($data['currency'] as $item){?>
                                             <tr> 
                                                 <th scope="row"><?=$item['id']?></th> 
                                                 <td><?=$item['name']?></td> 
-                                                <td><?=Helper::Truncate($item['message'])?></td> 
-                                                <td style="min-width:180px;"><?=$item['time']?></td> 
+                                                <td><?=$item['code']?></td> 
                                                 <td>
                                                     <a id="deletereview" onclick="moderate('<?=$item['id']?>');">
-                                                        <? if($item['moderation']){?>
+                                                        <? if($item['active']){?>
                                                         <img class="small-icon" src="/assets/img/approved-icon.svg">
                                                         <?}else{?>
                                                         <img class="small-icon" src="/assets/img/blank-icon.svg">
@@ -83,24 +81,24 @@ function notice(text) {
 
 $("#addnewreview").click(function() {
     $('form')[0].reset();
-    $('#modaltitle').html('Добавить отзыв');
-    $('form#review').attr('action', "/admin/ajax?method=addReview");
+    $('#modaltitle').html('Добавить валюту');
+    $('form#review').attr('action', "/admin/ajax?method=addCurrency");
     $('#row').val('0');
 });
 
 function edit() {
     $('#modaltitle').html('Редактировать отзыв');
-    $('form#review').attr('action', "/admin/ajax?method=editReview");
+    $('form#review').attr('action', "/admin/ajax?method=editCurrency");
     $.ajax({
         type: 'get',
-        url: '/admin/ajax?method=getReview&id=' + $('#row').val(),
+        url: '/admin/ajax?method=getCurrency&id=' + $('#row').val(),
         data: '',
         contentType: false,
         processData: false,
         success: function(result) {
             var json = jQuery.parseJSON(JSON.stringify(result));
             $('#name').val(json.item.name);
-            $('#message').val(json.item.message);
+            $('#code').val(json.item.code);
         },
         error: function(result) {
             alert('Server error');
@@ -111,7 +109,7 @@ function edit() {
 function del(id) {
     $.ajax({
         type: 'get',
-        url: '/admin/ajax?method=deleteReview&id=' + id,
+        url: '/admin/ajax?method=deleteCurrency&id=' + id,
         data: '',
         contentType: false,
         processData: false,
@@ -131,7 +129,7 @@ function del(id) {
 function moderate(id) {
     $.ajax({
         type: 'get',
-        url: '/admin/ajax?method=moderateReview&id=' + id,
+        url: '/admin/ajax?method=activateCurrency&id=' + id,
         data: '',
         contentType: false,
         processData: false,
@@ -207,12 +205,12 @@ $(document).ready(function() {
                         <div class="modal-body">
 
                             <div class="form-group">
-                                <label>Имя</label>
+                                <label>Название</label>
                                 <input type="text" id="name" class="form-control" name="name">
                             </div>
                             <div class="form-group">
-                                <label>Отзыв</label>
-                                <textarea class="form-control" id="message" rows="5" name="message"></textarea>
+                                <label>Код</label>
+                                <input type="text" id="code" class="form-control" name="code">
                             </div>
                             <input type="hidden" id="row" name="id" value="">
                             </form
